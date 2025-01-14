@@ -108,20 +108,28 @@ fn main() {
                 for i in 0..positions.len() {
                     for j in i + 1..positions.len() {
                         let pos1 = positions[i];
+                        antinode_positions.insert(pos1);
+
                         let pos2 = positions[j];
+                        antinode_positions.insert(pos2);
+
                         //println!("Pair for {}: ({:?}, {:?})", ch, pos1, pos2);
 
                         let diff = matrix.coordinate_difference(pos1, pos2);
                         //println!("Difference: {:?}", diff);
 
-                        if let Some(add_result) = matrix.add_difference(pos1, diff) {
+                        let mut current_pos = pos1;
+                        while let Some(add_result) = matrix.add_difference(current_pos, diff) {
                             //println!("Add result: {:?}", add_result);
                             antinode_positions.insert(add_result);
+                            current_pos = add_result;
                         }
 
-                        if let Some( sub_result) = matrix.subtract_difference(pos2, diff) {
+                        current_pos = pos2;
+                        while let Some(sub_result) = matrix.subtract_difference(current_pos, diff) {
                             //println!("Sub result: {:?}", sub_result);
                             antinode_positions.insert(sub_result);
+                            current_pos = sub_result;
                         }
                     }
                 }
